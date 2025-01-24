@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Well Soon Message</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4c0d4; /* Light Pink */
+            font-family: 'Pacifico', cursive;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2rem; /* Constant heart size */
+            animation: heartFloat 4s ease-in-out infinite;
+        }
+
+        /* Random floating animation for hearts */
+        @keyframes heartFloat {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Fade-in effect for the "Oyy Bujjamma" text */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        #message {
+            text-align: center;
+            font-size: 3.5rem;
+            color: #d5006d; /* Dark Pink */
+            z-index: 10;
+            position: absolute;
+            top: 15%;
+            animation: fadeIn 3s ease-out; /* Apply the fade-in animation */
+        }
+
+        #surpriseButton {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background-color: #ff66b2;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        #surpriseButton:hover {
+            background-color: #ff3385;
+        }
+
+        /* Hidden surprise interface */
+        #surpriseInterface {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1d3c6d;
+            color: white;
+            z-index: 5;
+            text-align: center;
+            padding-top: 20%;
+        }
+
+        .whiteBox {
+            background-color: white;
+            color: #1d3c6d;
+            padding: 30px;
+            font-size: 1.5rem;
+            border-radius: 12px;
+            display: inline-block;
+            animation: whiteBoxFloat 4s infinite;
+        }
+
+        @keyframes whiteBoxFloat {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-30px); }
+        }
+
+        /* Floating hearts in the surprise interface */
+        .floating-hearts {
+            font-size: 3rem;
+            color: white;
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            animation: heartFloatWhite 6s infinite;
+        }
+
+        @keyframes heartFloatWhite {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50px); }
+        }
+
+        /* Removed the non-floating blue heart from the second interface */
+    </style>
+</head>
+<body>
+
+    <!-- Main Interface -->
+    <div id="mainInterface">
+        <div id="floatingHearts"></div>
+        <div id="message">Oyy Bujjamma</div>
+        <button id="surpriseButton" onclick="showSurpriseMessage()">Click me for a surprise!</button>
+    </div>
+
+    <!-- Surprise Message Interface -->
+    <div id="surpriseInterface">
+        <div class="floating-hearts">
+            <!-- Only floating hearts here (no static blue heart) -->
+            <span class="heart">💕</span>
+            <span class="heart">💗</span>
+            <span class="heart">💙</span>
+        </div>
+        <div class="whiteBox">
+            ammai ni cold and headache thaggipothadhi.. <br> don't worry.. thagge dhaka bore kottakunda neeku thodu nenunta omkie naa
+        </div>
+    </div>
+
+    <script>
+        // Predefined heart positions for customization
+        const heartPositions = [
+            { top: '10%', left: '10%' },
+            { top: '20%', left: '25%' },
+            { top: '30%', left: '5%' },
+            { top: '60%', left: '50%' },
+            { top: '80%', left: '80%' },
+            { top: '5%', left: '70%' },
+            { top: '50%', left: '90%' },
+            { top: '70%', left: '40%' },
+            { top: '15%', left: '50%' },
+            { top: '50%', left: '20%' },
+            { top: '75%', left: '10%' },
+            { top: '65%', left: '70%' },
+            { top: '45%', left: '30%' },
+            { top: '55%', left: '80%' },
+            { top: '10%', left: '90%' },
+        ];
+
+        // Function to generate hearts at the predefined positions
+        function generateHearts() {
+            const heartContainer = document.getElementById('floatingHearts');
+            const heartTypes = ['💕']; // Only this heart for the first interface
+            const numberOfHearts = 15;
+
+            for (let i = 0; i < numberOfHearts; i++) {
+                const heart = document.createElement('span');
+                heart.classList.add('heart');
+                heart.textContent = heartTypes[0]; // Always the same heart type (💕)
+
+                // Randomly choose to apply 70% opacity
+                if (Math.random() > 0.5) {
+                    heart.style.opacity = '0.7';
+                }
+
+                // Randomize starting position across the screen, avoiding overlap with the text
+                const xPos = Math.random() * 100 + '%';
+                const yPos = Math.random() * 70 + 15 + '%'; // Ensure hearts don't overlap the message
+
+                heart.style.left = xPos;
+                heart.style.top = yPos;
+
+                // Add floating effect with random delays and animation speed
+                heart.style.animationDuration = (Math.random() * 4 + 4) + 's'; // Random animation speed (4-8s)
+                heart.style.animationDelay = Math.random() * 2 + 's'; // Random delay for staggered effect
+
+                heartContainer.appendChild(heart);
+            }
+        }
+
+        // Call function to generate hearts on page load
+        generateHearts();
+
+        function showSurpriseMessage() {
+            // Hide main interface and show surprise interface
+            document.getElementById('mainInterface').style.display = 'none';
+            document.getElementById('surpriseInterface').style.display = 'block';
+
+            // Change the main message to break into two lines
+            document.getElementById('message').innerHTML = "Oyy Bujjamma<br>don't worry, everything will be okay!";
+        }
+    </script>
+</body>
+</html>
